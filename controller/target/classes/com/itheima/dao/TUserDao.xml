@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间，对当前映射文件对唯一标识-->
+<mapper namespace="com.itheima.dao.TUserDao">
+    <!--
+        查询语句
+        resultType：返回的实体类的类型，类全名
+    -->
+    <select id="selectOneWithAdmin" resultType="TUser">
+        select * from t_user_role,
+            (select * from t_user where username=#{username} and password=#{password}) user
+                where t_user_role.role_id=1 and user.id=t_user_role.user_id;
+    </select>
+
+    <resultMap id="selectUserListsMap" type="TUser" autoMapping="true">
+        <id property="id" column="uid"/>
+        <collection property="roles" javaType="list" ofType="TRole" autoMapping="true">
+            <id property="id" column="rid"/>
+        </collection>
+    </resultMap>
+    <select id="selectUserLists" resultMap="selectUserListsMap">
+        select *,t_role.id rid from t_user_role,t_role,
+                      (select *,id uid from t_user where username like "%${searchName}%" limit #{startIndex},#{pageSize}) user
+        where user.id=t_user_role.user_id and t_user_role.role_id=t_role.id;
+    </select>
+
+    <select id="selectCount" resultType="int">
+        select count(*) from t_user where username like "%${searchName}%"
+    </select>
+</mapper>
