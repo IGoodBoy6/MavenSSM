@@ -22,7 +22,7 @@
 
     <properties>
         <itheima.version>1.0-SNAPSHOT</itheima.version>
-        <spring.version>5.2.2.RELEASE</spring.version>
+        <spring.version>5.0.6.RELEASE</spring.version>
         <mysql.version>8.0.22</mysql.version>
         <junit.version>4.13.1</junit.version>
         <slf4j.version>1.8.0-beta4</slf4j.version>
